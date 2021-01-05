@@ -77,6 +77,7 @@ int main(int argc, char **argv)
 		printf("Waiting for a connection on port %d\n", SERVER_PORT);
 		fflush(stdout);
 
+		//accepts connections
 		if((connfd = accept(listenfd, (SA *)&servaddr, (socklen_t*)&c)) < 0){
 			printf("accept error");
 			return -1;
@@ -143,7 +144,7 @@ int main(int argc, char **argv)
 
 		char *name = strtok(path, "/");
 
-		printf("File type is:%s ",extentionType);
+		
 
 
 		if(strlen(extentionType) > 1)
@@ -185,7 +186,7 @@ void handleFile(int fd, char *name){
 
 			char responce[browserInputSize+100];
 			int responce_length = sprintf(responce,"HTTP/1.1 OK\n""Connection: close\n""Content-length: %ld\n""Content-type: %s\n""\n",browserInputSize,outputType);
-	
+			printf("HTTP/1.1 200 FILE FOUND \n\n");
 			memcpy(responce + responce_length, source,browserInputSize);
 			send(fd, responce,responce_length + browserInputSize, 0);
 		}
@@ -196,8 +197,9 @@ void handleFile(int fd, char *name){
         	outputType = html;
 
 		char responce[strlen(error)+100];
-		int responce_length = sprintf(responce,"HTTP/1.1 404 NOT FOUND\n""Connection: close\n""Content-length: %ld\n""Content-type: %s\n""\n",strlen(error),outputType);
+		int responce_length = sprintf(responce,"HTTP/1.1  NOT FOUND\n""Connection: close\n""Content-length: %ld\n""Content-type: %s\n""\n",strlen(error),outputType);
 	
+		printf("HTTP/1.1 404 NOT FOUND \n\n");
 		memcpy(responce + responce_length, error,strlen(error));
 		send(fd, responce,responce_length + strlen(error), 0);
 	}
