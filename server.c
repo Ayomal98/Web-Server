@@ -29,8 +29,7 @@
 #define jpg "image/jpeg"
 #define html "text/html"
 #define mp4 "video/mp4"
-
-
+#define gif "image/gif"
 
 char *outputType;
 
@@ -52,7 +51,6 @@ int main(int argc, char **argv)
 		return -1;
 		}
 
-	// bzero(&servaddr, sizeof(servaddr));
 
 	//creating the structure of the socket
 	struct sockaddr_in servaddr;
@@ -83,7 +81,6 @@ int main(int argc, char **argv)
 			printf("accept error");
 			return -1;
 		}
-		printf("%d %d %d",connfd,listenfd,n);
 		read( connfd, browserInput, 1024);
 
 
@@ -91,7 +88,6 @@ int main(int argc, char **argv)
 		int count = 0;
 		int j = 0;
 		bool isTypeSaved = false;
-
 		for(int i=0; i<=(strlen(browserInput)); i++){
 			if(isTypeSaved == false && browserInput[i] == ' '){
 				type[j] = '\0';
