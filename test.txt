@@ -1,2 +1,1 @@
-this is a test txt
-
+This text page includes some texts
