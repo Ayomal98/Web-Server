@@ -4,9 +4,33 @@
 3)Listen for incoming connection
 4)Accept the connection
 */
-
-#include "common.h"
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <stdarg.h>
+#include <stdbool.h>
 #include <strings.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/time.h>
+#include <sys/ioctl.h>
+#include <netdb.h>
+
+#define SERVER_PORT 12000
+#define SA struct sockaddr
+
+#define txt "text/plain"
+#define png "image/png"
+#define jpg "image/jpeg"
+#define html "text/html"
+#define mp4 "video/mp4"
+
+
 
 char *outputType;
 
@@ -17,11 +41,12 @@ int main(int argc, char **argv)
 	int listenfd, connfd, n;
 
 	char browserInput[1024] = {0}; 
-    	char type[4];       
-    	char path[1024];
+    	char type[4];       //type of the request
+    	char path[1024];	//file path
 	
 	//creating the socket
 	listenfd=socket(AF_INET,SOCK_STREAM,0);
+	
 	if(listenfd == -1){
 		printf("socket error");
 		return -1;
@@ -47,7 +72,7 @@ int main(int argc, char **argv)
 		return -1;
 		}
 
-	for( ; ; ) {
+	while(1) {
 		struct sockaddr_in addr;
 		int c=sizeof(struct sockaddr_in);
 
@@ -58,7 +83,7 @@ int main(int argc, char **argv)
 			printf("accept error");
 			return -1;
 		}
-
+		printf("%d %d %d",connfd,listenfd,n);
 		read( connfd, browserInput, 1024);
 
 
